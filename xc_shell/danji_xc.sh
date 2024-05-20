@@ -187,11 +187,11 @@ while true; do
   # 检查命令输出是否包含 "error"
   if [[ $output == *"error"* ]]; then
     echo "访问talos版本中，请等待2分钟，不要进行任何操作"
-    sleep 200
+    sleep 120
     #talosctl bootstrap
   else
     echo "talos访问成功"
-    talosctl bootstrap --nodes ${ipv4_patch}
+    talosctl bootstrap --nodes 172.16.102.${talos_cfg}
     echo "talos引导成功!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     # 输出不包含 "error"，则认为命令执行成功，跳出循环
     break
@@ -204,12 +204,12 @@ while true; do
   output=$(eval "$kubectl_version" 2>&1)
   exit_code=$?
   # 检查命令输出是否包含 "error"
-  if [[ $output == *"timeout"* ]]; then
+  if [[ $output == *"error"* ]]; then
     echo "访问k8s中，请等待2分钟，不要进行任何操作"
-    talosctl kubeconfig -f
+    talosctl kubeconfig
     sleep 120
   else
-    echo "k8s访问成功!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    echo "k8s访问成功"
     # 输出不包含 "error"，则认为命令执行成功，跳出循环
     break
   fi
@@ -231,7 +231,6 @@ while true; do
   etcd_status=$(echo "$service_status" | grep "^.* etcd .*")
   if [[ -z "$etcd_status" ]]; then
     echo "错误：在'talosctl service'命令输出中找不到etcd服务状态,请等待2分钟"
-    talosctl bootstrap
   fi
 
   expected_state="Running"
@@ -239,12 +238,26 @@ while true; do
 
   if [[ "$state_value" == "$expected_state" ]]; then
     echo "etcd服务已进入预期状态：$expected_state"
-    talosctl kubeconfig -f
+    talosctl kubeconfig
     talosctl service
     kubectl get pods -A
     break
   else
     echo "etcd服务未处于预期状态。当前状态：$state_value"
+    talosctl bootstrap
+    #echo "请输入你要执行bootstrap的ipv4主机位"
+    #read ipv4_path
+    #if [ $? -eq 0 ]; then
+    #    echo "读取命令执行成功"
+    #    echo "修改的的值为: $ipv4_path"
+    #else
+    #    echo "读取命令执行失败"
+    #fi
+    #talosctl bootstrap --nodes 172.16.102.${ipv4_path}
+    #if [[ $? -ne 0 ]]; then
+    #    echo "引导新节点失败。"
+    #    exit 1
+    #fi
   fi
 
   # 短暂等待，再次检查
@@ -270,6 +283,12 @@ while true; do
   echo "以下命名空间未处于Running状态："
   echo "$non_running"
 
+#  retries=$((retries + 1))
+#  if (( retries > MAX_RETRIES )); then
+#    # 如果达到最大重试次数，打印警告并退出脚本
+#    echo "达到最大重试次数，仍有命名空间未达到Running状态。退出脚本。"
+#    exit 1
+#  fi
 
   # 等待指定时间后再次检查
   echo "将在20秒后重试..."

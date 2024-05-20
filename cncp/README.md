@@ -1,2 +1,0 @@
-# cncp-helm
-

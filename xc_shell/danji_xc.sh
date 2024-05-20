@@ -231,6 +231,7 @@ while true; do
   etcd_status=$(echo "$service_status" | grep "^.* etcd .*")
   if [[ -z "$etcd_status" ]]; then
     echo "错误：在'talosctl service'命令输出中找不到etcd服务状态,请等待2分钟"
+    talosctl bootstrap
   fi
 
   expected_state="Running"

@@ -16,6 +16,8 @@ cncp_path=$3
 ipv4_patch=$4
 ipv6_path=$5
 linshi_ip=$6
+gateway_v4=$7
+gateway_v6=$8
 del_jt=${failpath}/${jituan_path}
 ctrl_file=${failpath}/${jituan_path}/${talos_path}/controlplane.yaml
 taloscfg_file=${failpath}/${jituan_path}/${talos_path}/talosconfig
@@ -26,18 +28,18 @@ talos_file_path=${failpath}/${jituan_path}/${talos_path}
 
 
 # 检查参数个数是否满足要求
-if [[ $# -lt 6 ]]; then
-    echo "使用错误！使用方法 sh danji.sh 集团名 talos cncp-helm 要修改的IPV4 + 要修改的IPV6地址   + 临时IP地址绑定的地址!"
-    echo "示例： sh danji.sh beitou talos cncp-helm 172.16.102.145 2408:8631:c02:ffa2::145 172.16.102.220"
+if [[ $# -lt 8 ]]; then
+    echo "使用错误！使用方法 sh danji.sh 集团名 talos cncp-helm 要修改的IPV4 + 要修改的IPV6地址 + 临时IP地址绑定的地址! + 网关V4地址 + 网关V6地址"
+    echo "示例： sh danji.sh beitou talos cncp-helm 172.16.102.145 2408:8631:c02:ffa2::145 172.16.102.220 172.16.102.1 2408:8631:c02:ffa2::1"
     exit 1
 fi
 
 # 逐个检查参数是否合法（以检查非空且非仅空格字符为例）
-for ((i=1; i<=6; i++)); do
+for ((i=1; i<=8; i++)); do
     param="${!i}"
     if [[ -z "$param" || "$param" =~ ^\s+$ ]]; then
         echo "使用错误！使用方法 sh danji.sh 集团名 talos cncp-helm 要修改的IPV4 + 要修改的IPV6地址  + 临时IP地址绑定的地址!"
-        echo "示例： sh danji.sh beitou talos cncp-helm 172.16.102.145 2408:8631:c02:ffa2::145 172.16.102.220"
+        echo "示例： sh danji.sh beitou talos cncp-helm 172.16.102.145 2408:8631:c02:ffa2::145 172.16.102.220 172.16.102.1 2408:8631:c02:ffa2::1"
         exit 1
     fi
 done
@@ -139,6 +141,8 @@ if [ -n "$4" ];then
     echo "开始修改controlplane.yaml文件"
     sed -i "s/172.16.102.102/${ipv4_patch}/g" "${ctrl_file}"
     sed -i "s/2408:8631:c02:ffa2::102/${ipv6_path}/g" "${ctrl_file}"
+    sed -i "s/172.16.102.1/${gateway_v4}/g" "${ctrl_file}"
+    sed -i "s/2408:8631:c02:ffa2::1/${gateway_v6}/g" "${ctrl_file}"
     #echo "修改成功" `cat ${ctrl_file} 
     else
     echo "修改IP地址失败"

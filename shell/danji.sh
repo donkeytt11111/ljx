@@ -28,6 +28,7 @@ talos_file_path=${failpath}/${jituan_path}/${talos_path}
 # 检查参数个数是否满足要求
 if [[ $# -lt 6 ]]; then
     echo "使用错误！使用方法 sh danji.sh 集团名 talos cncp-helm 要修改的IP地址!主机位! 临时IP地址绑定的地址!主机位! talosconfig中的IP地址!主机位!"
+    echo "使用示例：sh danji.sh beitou talos cncp-helm 145 195 145"
     exit 1
 fi
 

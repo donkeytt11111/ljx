@@ -4,7 +4,7 @@ talosctl_version="talosctl version"
 talosctl_service="talosctl service"
 command_jiqun="talosctl kubeconfig"
 kubectl_version="kubectl get pods -A"
-#生成配置文件
+##生成配置文件
 command_token="talosctl  gen  config  mingyang https://172.16.102.102:6443  --config-patch-control-plane @patch.yaml --config-patch-worker @patch-worker.yaml"
 all_file_name=*
 patch_name=patch*

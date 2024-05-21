@@ -58,12 +58,12 @@ while true; do
   echo "以下命名空间未处于Running状态："
   echo "$non_running"
 
-  retries=$((retries + 1))
-  if (( retries > MAX_RETRIES )); then
-    # 如果达到最大重试次数，打印警告并退出脚本
-    echo "达到最大重试次数，仍有命名空间未达到Running状态。退出脚本。"
-    exit 1
-  fi
+#  retries=$((retries + 1))
+#  if (( retries > MAX_RETRIES )); then
+#    # 如果达到最大重试次数，打印警告并退出脚本
+#    echo "达到最大重试次数，仍有命名空间未达到Running状态。退出脚本。"
+#    exit 1
+#  fi
 
   # 等待指定时间后再次检查
   echo "将在20秒后重试..."

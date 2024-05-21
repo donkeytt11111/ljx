@@ -191,7 +191,7 @@ while true; do
     #talosctl bootstrap
   else
     echo "talos访问成功"
-    talosctl bootstrap --nodes 172.16.102.${talos_cfg}
+    #talosctl bootstrap --nodes 172.16.102.${talos_cfg}
     echo "talos引导成功!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     # 输出不包含 "error"，则认为命令执行成功，跳出循环
     break

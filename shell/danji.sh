@@ -57,6 +57,7 @@ else
   echo "删除文件 '$talos_tlcfg_path' 不存在。"
 fi
 
+yum install -y jq
 #集团
 if [ -n "$1" ];then
     echo "开始创建"{$1}"文件夹" 

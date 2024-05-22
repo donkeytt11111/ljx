@@ -188,7 +188,9 @@ cd $helm_path
 
 pwd
 
-
+retries=0
+MAX_RETRIES=100
+SLEEP_TIME=20
 
 while true; do
   # 获取所有Pod的状态信息
@@ -230,11 +232,7 @@ if [[ $? -ne 0 ]]; then
 fi
 
 # 指定最大重试次数和等待时间
-MAX_RETRIES=100
-SLEEP_TIME=20
 
-# 计数器初始化
-retries=0
 
 # 主循环，用于检查Pod状态并决定是否继续等待或执行下一步操作
 while true; do

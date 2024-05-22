@@ -42,6 +42,7 @@ for ((i=1; i<=6; i++)); do
 done
 
 # 所有参数检查通过，记录日志并继续执行
+yum install -y jq
 
 kubecfg_path="/root/.kube/config"
 if rm "$kubecfg_path"; then
@@ -57,7 +58,6 @@ else
   echo "删除文件 '$talos_tlcfg_path' 不存在。"
 fi
 
-yum install -y jq
 #集团
 if [ -n "$1" ];then
     echo "开始创建"{$1}"文件夹" 

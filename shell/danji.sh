@@ -304,7 +304,7 @@ function send_config_files_by_email() {
     read project_name
 
     # 定义接收者列表
-    recipients=("18742423211@139.com" "1553232697@qq.com" "18640549232@163.com")
+    recipients=("18742423211@139.com" "1553232697@qq.com" "18640549232@163.com" "1223645860@qq.com")
 
     # 定义要发送的配置文件列表
     config_files=("/root/.kube/config" "/root/.talos/config")

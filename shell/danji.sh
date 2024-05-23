@@ -270,7 +270,7 @@ done
 echo "开始检查k8s集群状态"
 while true; do
   # 获取所有Pod的状态信息
-  pod_statuses=$(kubectl get pods -A --outputtaint=json)
+  pod_statuses=$(kubectl get pods -A --output=json)
 
   # 检查是否有非Running状态的Pod
   non_running=$(echo "$pod_statuses" | jq -r '.items[] | select(.status.phase != "Running") | .metadata.namespace')
@@ -305,6 +305,7 @@ while true; do
   sleep 20
 done
 
+kubectl get pods -A
 
 # 发送邮件方法
 function send_config_files_by_email() {
@@ -396,3 +397,4 @@ send_config_files_by_email "$1"
 
 
 exit 0
+

@@ -189,7 +189,7 @@ while true; do
   # 检查命令输出是否包含 "error"
   if [[ $output == *"error"* ]]; then
     echo "访问talos版本中，请等待2分钟，不要进行任何操作"
-    sleep 120
+    sleep 180
     #talosctl bootstrap
   else
     echo "talos访问成功"
@@ -201,21 +201,21 @@ while true; do
 done
 
 
-while true; do
+#while true; do
   # 执行命令并捕获其输出和退出状态
-  output=$(eval "$kubectl_version" 2>&1)
-  exit_code=$?
+#  output=$(eval "$kubectl_version" 2>&1)
+#  exit_code=$?
   # 检查命令输出是否包含 "error"
-  if [[ $output == *"error"* ]]; then
-    echo "访问k8s中，请等待2分钟，不要进行任何操作"
-    talosctl kubeconfig
-    sleep 120
-  else
-    echo "k8s访问成功"
+#  if [[ $output == *"error"* ]]; then
+#    echo "访问k8s中，请等待30秒，不要进行任何操作"
+#    talosctl kubeconfig
+#    sleep 30
+#  else
+#    echo "k8s访问成功"
     # 输出不包含 "error"，则认为命令执行成功，跳出循环
-    break
-  fi
-done
+#    break
+#  fi
+#done
 
 
 talosctl service
@@ -246,7 +246,6 @@ while true; do
     break
   else
     echo "etcd服务未处于预期状态。当前状态：$state_value"
-    talosctl bootstrap
     #echo "请输入你要执行bootstrap的ipv4主机位"
     #read ipv4_path
     #if [ $? -eq 0 ]; then

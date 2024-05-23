@@ -193,7 +193,7 @@ while true; do
     #talosctl bootstrap
   else
     echo "talos访问成功"
-    talosctl bootstrap --nodes 172.16.102.${talos_cfg}
+    talosctl bootstrap
     echo "talos引导成功!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     # 输出不包含 "error"，则认为命令执行成功，跳出循环
     break
@@ -267,10 +267,11 @@ while true; do
 done
 
 
+
 echo "开始检查k8s集群状态"
 while true; do
   # 获取所有Pod的状态信息
-  pod_statuses=$(kubectl get pods -A --output=json)
+  pod_statuses=$(kubectl get pods -A --outputtaint=json)
 
   # 检查是否有非Running状态的Pod
   non_running=$(echo "$pod_statuses" | jq -r '.items[] | select(.status.phase != "Running") | .metadata.namespace')
@@ -280,11 +281,19 @@ while true; do
     echo "所有命名空间均处于Running状态"
     break
   fi
-
   # 输出当前非Running状态的Namespace列表
   echo "以下命名空间未处于Running状态："
   echo "$non_running"
 
+# 检查输出是否为空
+  echo "正在检查污点请稍后"
+  outputtaint=$(kubectl describe node cncp-ms-01 | grep 'Taint')
+  if [ -n "$outputtaint" ]; then
+      kubectl taint node cncp-ms-01 node-role.kubernetes.io/control-plane-
+      echo "污点清除成功"
+  else
+      echo "不存在污点"
+  fi
 #  retries=$((retries + 1))
 #  if (( retries > MAX_RETRIES )); then
 #    # 如果达到最大重试次数，打印警告并退出脚本
@@ -293,7 +302,7 @@ while true; do
 #  fi
 
   # 等待指定时间后再次检查
-  echo "将在20秒后重试..."
+  echo "将在20秒后检查集群状态..."
   sleep 20
 done
 

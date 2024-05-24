@@ -263,6 +263,7 @@ while true; do
     break
   else
     echo "etcd服务未处于预期状态。当前状态：$state_value"
+    talosctl bootstrap
     #echo "请输入你要执行bootstrap的ipv4主机位"
     #read ipv4_path
     #if [ $? -eq 0 ]; then
@@ -279,7 +280,7 @@ while true; do
   fi
 
   # 短暂等待，再次检查
-  sleep 30
+  sleep 60
 done
 
 

@@ -75,7 +75,6 @@ if command -v jq &> /dev/null; then
     jq --version
 else
     echo "jq安装失败，请检查错误信息。"
-    exit 1
 fi
 
 #修改services.yaml文件

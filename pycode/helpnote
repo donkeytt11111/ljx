@@ -1,0 +1,12 @@
+使用方法
+下载谷歌浏览器安装https://storage.googleapis.com/chrome-for-testing-public/124.0.6367.155/win64/chrome-win64.zip
+下载插件 https://storage.googleapis.com/chrome-for-testing-public/124.0.6367.155/win64/chromedriver-win64.zip 
+插件下载完成后 将里面的文件解压到python文件夹中
+C:\Users\Administrator\AppData\Local\Programs\Python\Python310
+
+1. 解压到桌面
+2. 打开cmd
+3. cd 到解压后的目录
+4. 安装组件 
+pip install pytest allure-pytest selenium
+5. 输入 pytest -s test_ddi.py

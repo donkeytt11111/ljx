@@ -272,10 +272,11 @@ while true; do
   # 尝试获取所有Pod的状态信息，直到成功
   while true; do
     pod_statuses=$(kubectl get pods -A --output=json 2>&1)
-    if [[ $? -eq 0 ]]; then  # 如果命令成功执行，跳出内层循环
+    if [[ $(echo "$pod_statuses" | jq -r '.items[] | select(.metadata.namespace == "kube-system")') ]]; then  # 检查kube-system是否存在
+      echo "成功连接到Kubernetes集群"
       break
     fi
-    echo "无法获取Pod信息，可能是网络问题或权限不足。等待60秒后重试..."
+    echo "无法获取kube-system命名空间的Pod信息。等待60秒后重试..."
     talosctl kubeconfig
     sleep 60
   done

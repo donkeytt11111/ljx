@@ -284,15 +284,17 @@ while true; do
   echo "以下命名空间未处于Running状态："
   echo "$non_running"
 
-# 检查输出是否为空
-  echo "正在检查污点请稍后"
-  outputtaint=$(kubectl describe node cncp-ms-01 | grep 'Taint')
-  if [ -n "$outputtaint" ]; then
-      kubectl taint node cncp-ms-01 node-role.kubernetes.io/control-plane-
-      echo "污点清除成功"
-  else
-      echo "不存在污点"
-  fi
+# 检查节点cncp-ms-01的污点
+echo "正在检查污点"
+outputtaint=$(kubectl describe node cncp-ms-01 | grep 'Taints:\s*<none>')
+
+if [ -n "$outputtaint" ]; then
+  echo "不存在污点"
+else
+  echo "存在污点，正在清除..."
+  kubectl taint node cncp-ms-01 node-role.kubernetes.io/control-plane-
+  echo "污点清除成功"
+fi
 #  retries=$((retries + 1))
 #  if (( retries > MAX_RETRIES )); then
 #    # 如果达到最大重试次数，打印警告并退出脚本
@@ -315,7 +317,7 @@ function send_config_files_by_email() {
     read project_name
 
     # 定义接收者列表
-    recipients=("18742423211@139.com" "1553232697@qq.com" "18640549232@163.com")
+    recipients=("1553232697@qq.com" "18640549232@163.com" "442283241@qq.com" "2505584859@qq.com" "1223645860@qq.com")
 
     # 定义要发送的配置文件列表
     config_files=("/root/.kube/config" "/root/.talos/config")

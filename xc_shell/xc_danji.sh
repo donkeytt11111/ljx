@@ -301,17 +301,17 @@ while true; do
   echo "以下命名空间未处于Running状态："
   echo "$non_running"
 
-# 检查节点cncp-ms-01的污点
-echo "正在检查污点"
-outputtaint=$(kubectl describe node cncp-ms-01 | grep 'Taints:\s*<none>')
+  # 检查节点cncp-ms-01的污点
+  echo "正在检查污点"
+  outputtaint=$(kubectl describe node cncp-ms-01 | grep 'Taints:\s*<none>')
 
-if [ -n "$outputtaint" ]; then
-  echo "不存在污点"
-else
-  echo "存在污点，正在清除..."
-  kubectl taint node cncp-ms-01 node-role.kubernetes.io/control-plane-
-  echo "污点清除成功"
-fi
+  if [ -n "$outputtaint" ]; then
+    echo "不存在污点"
+  else
+    echo "存在污点，正在清除..."
+    kubectl taint node cncp-ms-01 node-role.kubernetes.io/control-plane-
+    echo "污点清除成功"
+  fi
 #  retries=$((retries + 1))
 #  if (( retries > MAX_RETRIES )); then
 #    # 如果达到最大重试次数，打印警告并退出脚本

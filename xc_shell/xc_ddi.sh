@@ -412,10 +412,10 @@ read -p "请选择(1/${DEPLOYMENT_TYPE_SINGLE}, 2/${DEPLOYMENT_TYPE_MULTI_MASTER
 
 case $selection in
     1)
-        kubectl apply -f nginx-deployment.yaml
+        kubectl apply -f nginx-ds.yaml
         ;;
     2)
-        kubectl apply -f nginx-ds.yaml
+        kubectl apply -f nginx-deployment.yaml
         ;;
     *)
         printf "错误！无效输入。请确保输入1或2。\n"

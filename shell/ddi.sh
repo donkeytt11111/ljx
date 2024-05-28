@@ -193,7 +193,7 @@ pwd
 # 指定最大重试次数和等待时间
 MAX_RETRIES=100
 SLEEP_TIME=20
-
+MAX_error=10
 # 计数器初始化
 retries=0
 
@@ -257,10 +257,10 @@ while true; do
   echo "$non_running"
 
   retries=$((retries + 1))
-  if (( retries > MAX_RETRIES )); then
+  if (( retries > MAX_error )); then
     # 如果达到最大重试次数，打印警告并退出脚本
-    echo "达到最大重试次数，仍有命名空间未达到Running状态。退出脚本。"
-    exit 1
+    echo "达到最大重试次数，仍有命名空间未达到Running状态。执行异常步骤。"
+    kubectl -n openebs  get pods | grep completed |awk '{print$1}'|xargs kubectl -n openebs delete pods
   fi
 
   # 等待指定时间后再次检查

@@ -159,8 +159,8 @@ while true; do
 #  fi
 
   # 等待指定时间后再次检查
-  echo "将在$SLEEP_TIME秒后重试..."
-  sleep $SLEEP_TIME
+  echo "将在20秒后重试..."
+  sleep 20
 done
 
 
